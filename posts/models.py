@@ -10,6 +10,7 @@ class Post(models.Model):
     image4 = models.ImageField(null=True, blank=True)
     image5 = models.ImageField(null=True, blank=True)
     created_at = models.DateField(auto_now_add=True)
+    content = models.TextField()
 
     #True는 분실물, False는 습득물
     flag = models.BooleanField(default=True) 
