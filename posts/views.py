@@ -18,13 +18,13 @@ class PostList(generics.ListCreateAPIView):
         queryset = self.get_queryset() 
         try:
             if place:
-                queryset = queryset.filter(place=place)
+                queryset = queryset.filter(place=[place])
                 print(queryset)
             if color:
-                queryset = queryset.filter(color=color)
+                queryset = queryset.filter(color=[color])
                 print(queryset)
             if type:
-                queryset = queryset.filter(type=type)
+                queryset = queryset.filter(type=[type])
                 print(queryset)
 
         except Exception as e:
