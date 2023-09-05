@@ -11,20 +11,20 @@ class PostList(generics.ListCreateAPIView):
     serializer_class = PostSerializer
     # filter 기능
     def get(self, request, *args, **kwargs):
-        place = request.query_params.get('place', '')  # 기본값으로 빈 문자열을 설정
-        color = request.query_params.get('color', '')  # 기본값으로 빈 문자열을 설정
-        type = request.query_params.get('type', '') # 기본값으로 빈 문자열을 설정
-        print(place, color, type)
-        queryset = self.get_queryset() 
+        place = request.query_params.getlist('place', [])  # 기본값으로 빈 문자열을 설정
+        color = request.query_params.getlist('color', [])  # 기본값으로 빈 문자열을 설정
+        type = request.query_params.getlist('type', []) # 기본값으로 빈 문자열을 설정
+        print("place", place,"color", color,"type", type)
+        queryset = self.get_queryset()
         try:
             if place:
-                queryset = queryset.filter(place=[place])
+                queryset = queryset.filter(place=place).distinct()
                 print(queryset)
             if color:
-                queryset = queryset.filter(color=[color])
+                queryset = queryset.filter(color=color).distinct()
                 print(queryset)
             if type:
-                queryset = queryset.filter(type=[type])
+                queryset = queryset.filter(type=type).distinct()
                 print(queryset)
 
         except Exception as e:
