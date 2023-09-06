@@ -32,7 +32,6 @@ class CommentList(generics.ListCreateAPIView):
             parent_comment = Comment.objects.get(pk=parent_comment_id)
         else:
             parent_comment = None
-
         serializer.save(post=post, writer=writer, parent_comment=parent_comment, content=content, created_at=datetime.now())
         return Response(serializer.data, status = status.HTTP_201_CREATED)
     
