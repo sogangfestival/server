@@ -45,7 +45,9 @@ class CommentSerializer(serializers.ModelSerializer):
 
 class PostDetailSerializer(serializers.ModelSerializer):
     comments = CommentSerializer(many=True, read_only=True)
-
+    place = serializers.MultipleChoiceField(choices=PLACES_CHOICES)
+    type = serializers.MultipleChoiceField(choices=TYPE_CHOICES)
+    color = serializers.MultipleChoiceField(choices=COLOR_CHOICES)
     class Meta:
         model = Post
         fields = '__all__'
