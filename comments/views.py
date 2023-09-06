@@ -4,7 +4,7 @@ from .serializers import *
 from datetime import datetime
 
 # Create your views here.
-class CommentList(generics.ListCreateAPIView):
+class CommentListCreate(generics.ListCreateAPIView):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
 
@@ -28,3 +28,7 @@ class CommentList(generics.ListCreateAPIView):
         parent_comment_id = self.request.data.get('parent_comment')
 
         serializer.save(post=post, writer=writer,parent_comment=parent_comment_id, content=content, created_at=datetime.now())
+
+class CommentDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer

@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from rest_framework import status
 
 # Create your views here.
-class PostList(generics.ListCreateAPIView):
+class PostListCreate(generics.ListCreateAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
     # filter 기능
