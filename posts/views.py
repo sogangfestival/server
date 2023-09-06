@@ -4,8 +4,10 @@ from .serializers import *
 from django.db.models import Q
 from rest_framework.response import Response
 from rest_framework import status
+from comments.models import Comment
 
-# Create your views here.
+from django.db.models import Q
+
 class PostList(generics.ListCreateAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
@@ -38,4 +40,19 @@ class PostList(generics.ListCreateAPIView):
 
 class PostDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Post.objects.all()
-    serializer_class = PostSerializer
+    serializer_class = PostDetailSerializer
+
+    def get(self, request, *args, **kwargs):
+        post_id = kwargs["pk"]
+        post_detail = Post.objects.get(id=post_id)
+        
+        # parent_comment가 null인 주요 댓글 조회
+        main_comments = Comment.objects.filter(post=post_detail, parent_comment=None)
+        
+        main_comments_data = CommentSerializer(main_comments, many=True).data
+        
+        data = self.get_serializer(post_detail).data
+        data['comments'] = main_comments_data
+        return Response(data)
+            
+
