@@ -4,6 +4,7 @@ from .serializers import *
 from django.db.models import Q
 from rest_framework.response import Response
 from rest_framework import status
+from comments.models import Comment
 
 from django.db.models import Q
 
@@ -39,4 +40,15 @@ class PostList(generics.ListCreateAPIView):
 
 class PostDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Post.objects.all()
-    serializer_class = PostSerializer
+    serializer_class = PostDetailSerializer
+    def get(self, request, *args, **kwargs):
+        post_id = kwargs["pk"]
+        post_detail = Post.objects.get(id=post_id)
+        comments = Comment.objects.filter(post=post_detail)
+        data = self.get_serializer(post_detail).data
+        data['comments'] = CommentSerializer(comments, many=True).data
+        return Response(data)
+        
+            
+
+
