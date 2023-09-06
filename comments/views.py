@@ -2,6 +2,7 @@ from rest_framework import generics
 from .models import *
 from .serializers import *
 from datetime import datetime
+from rest_framework.response import Response
 
 # Create your views here.
 class CommentListCreate(generics.ListCreateAPIView):
@@ -32,3 +33,15 @@ class CommentListCreate(generics.ListCreateAPIView):
 class CommentDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
+    def get(self, request, *args, **kwargs):
+        comment_id = kwargs["pk"]
+        comment = Comment.objects.get(id=comment_id)
+        serializer = self.get_serializer(comment)
+        replys = []
+        cocomments = Comment.objects.filter(parent_comment=comment_id)
+        for cocomment in cocomments:
+            reply = self.get_serializer(cocomment)
+            replys.append(reply.data)
+        data = serializer.data 
+        data["subcomments"] = replys
+        return Response(data)
