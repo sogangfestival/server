@@ -19,9 +19,9 @@ class CommentSerializer(serializers.ModelSerializer):
         minutes, _ = divmod(remainder, 60)
 
         if days > 0:
-            return f"{days} days, {hours} hours, {minutes} minutes ago"
+            return f"{days} days {hours} hours {minutes} minutes ago"
         elif hours > 0:
-            return f"{hours} hours, {minutes} minutes ago"
+            return f"{hours} hours {minutes} minutes ago"
         elif minutes > 0:
             return f"{minutes} minutes ago"
         else:
