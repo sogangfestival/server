@@ -52,11 +52,11 @@ COLOR_CHOICES = (
 class Post(models.Model):
     title = models.CharField(max_length=255, unique=True)
     password = models.IntegerField(null = True)
-    image1 = models.ImageField(null=True, blank=True)
-    image2 = models.ImageField(null=True, blank=True)
-    image3 = models.ImageField(null=True, blank=True)
-    image4 = models.ImageField(null=True, blank=True)
-    image5 = models.ImageField(null=True, blank=True)
+    image1 = models.ImageField(null=True, blank=True, upload_to ='img_files/')
+    image2 = models.ImageField(null=True, blank=True,upload_to ='img_files/')
+    image3 = models.ImageField(null=True, blank=True,upload_to ='img_files/')
+    image4 = models.ImageField(null=True, blank=True,upload_to ='img_files/')
+    image5 = models.ImageField(null=True, blank=True,upload_to ='img_files/')
     created_at = models.DateField(auto_now_add=True)
     content = models.TextField()
 
