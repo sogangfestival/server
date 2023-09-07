@@ -15,9 +15,10 @@ class Comment(models.Model):
         null=True,
         blank=True,
     )
+    password = models.IntegerField(null = True)
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)    
-    writer = models.CharField(max_length=100)
+    writer = models.CharField(max_length=100, blank=True)
 
     def __str__(self):
         return self.post.title

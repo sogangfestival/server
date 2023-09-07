@@ -54,5 +54,3 @@ class PostDetail(generics.RetrieveUpdateDestroyAPIView):
         data = self.get_serializer(post_detail).data
         data['comments'] = main_comments_data
         return Response(data)
-            
-
