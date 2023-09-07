@@ -5,6 +5,8 @@ from django.utils import timezone
 
 class CommentSerializer(serializers.ModelSerializer):
     created_at = serializers.SerializerMethodField()
+    writer = serializers.CharField(max_length=100, required=False)  # writer 필드를 선택 사항으로 변경
+
     class Meta:
         model = Comment
         fields = '__all__'
@@ -26,3 +28,20 @@ class CommentSerializer(serializers.ModelSerializer):
             return f"{minutes} minutes ago"
         else:
             return "Just now"
+    
+    def create(self, validated_data):
+        post = validated_data['post']
+        request = self.context['request']
+        password = int(request.data.get('password'))
+        post_password = post.password
+
+        writer = None
+        if post_password == password:
+            writer = '작성자'
+        else:
+            comments_count = Comment.objects.filter(post=post).exclude(writer='작성자').count() + 1
+            writer = f'알로스{comments_count}'
+        
+        # "writer" 필드를 설정하고 validated_data에서 제거
+        validated_data['writer'] = writer
+        return super().create(validated_data)
