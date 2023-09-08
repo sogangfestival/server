@@ -22,6 +22,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('comments/', include('comments.urls')),
     path('posts/', include('posts.urls')),
+    path('bluemarble/', include('bluemarble.urls')),
+    
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
