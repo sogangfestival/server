@@ -5,17 +5,25 @@ from django.db.models import Q
 from rest_framework.response import Response
 from rest_framework import status
 from comments.models import Comment
+from rest_framework.pagination import PageNumberPagination
+from rest_framework import viewsets
 
-from django.db.models import Q
+class PageNumber(PageNumberPagination):
+    page_size =4
+    page_size_query_param = 'page_size'
+    max_page_size =100
 
-class PostList(generics.ListCreateAPIView):
+
+"""class PostList(generics.ListCreateAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
+    pagination_class = PageNumber
     # filter 기능
     def get(self, request, *args, **kwargs):
         place = request.query_params.getlist('place', [])
         color = request.query_params.getlist('color', [])
         type = request.query_params.getlist('type', [])
+        keyword = request.query_params.get('keyword', None)
 
         queryset = self.get_queryset()
         try:
@@ -23,19 +31,49 @@ class PostList(generics.ListCreateAPIView):
             conditions = Q()
             
             for p in place:
-                conditions |= Q(place__icontains=p)
+                conditions &= Q(place__icontains=p)
             
             for c in color:
-                conditions |= Q(color__icontains=c)
+                conditions &= Q(color__icontains=c)
 
             for t in type:
-                conditions |= Q(type__icontains=t)
+                conditions &= Q(type__icontains=t)
+            if keyword:
+                conditions &= Q(title__icontains=keyword)
+                print(keyword)
 
             queryset = queryset.filter(conditions)
         except Exception as e:
             return Response({'message': 'Filtering Error Occured, Sorry'}, status=status.HTTP_404_NOT_FOUND)
         serializer = PostSerializer(queryset, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.data, status=status.HTTP_200_OK)"""
+class PostList(viewsets.ReadOnlyModelViewSet):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+    pagination_class = PageNumber
+    def get_queryset(self):
+        place = self.request.query_params.getlist('place', [])
+        color = self.request.query_params.getlist('color', [])
+        type = self.request.query_params.getlist('type', [])
+        keyword = self.request.query_params.get('keyword', None)
+
+        queryset = super().get_queryset()
+        conditions = Q()
+
+        for p in place:
+            conditions &= Q(place__icontains=p)
+
+        for c in color:
+            conditions &= Q(color__icontains=c)
+
+        for t in type:
+            conditions &= Q(type__icontains=t)
+
+        if keyword:
+            conditions &= Q(title__icontains=keyword)
+
+        return queryset.filter(conditions)
+
 
 
 class PostDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -55,4 +93,5 @@ class PostDetail(generics.RetrieveUpdateDestroyAPIView):
         data['comments'] = main_comments_data
         return Response(data)
             
+
 

@@ -68,3 +68,5 @@ class Post(models.Model):
     type = MultiSelectField(max_length=100, choices=TYPE_CHOICES)
     color = MultiSelectField(max_length=100, choices=COLOR_CHOICES)
     
+    def __str__(self):
+        return self.title

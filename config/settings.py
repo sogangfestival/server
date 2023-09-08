@@ -1,5 +1,6 @@
 from pathlib import Path
 import os
+from rest_framework.pagination import PageNumberPagination
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -56,6 +57,11 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'config.urls'
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 100
+}
 
 TEMPLATES = [
     {
@@ -131,3 +137,4 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
