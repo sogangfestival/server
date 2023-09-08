@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'posts',
     'comments',
+    'bluemarble',
 ]
 
 MIDDLEWARE = [
