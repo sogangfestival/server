@@ -1,5 +1,5 @@
 from django.urls import path, include
-from .views import PostDetail,PostList
+from .views import PostDetail,AcquisCreateList, LostCreateList
 from rest_framework.routers import DefaultRouter
 
 #router = DefaultRouter()
@@ -7,6 +7,7 @@ from rest_framework.routers import DefaultRouter
 
 
 urlpatterns = [
-    path('', PostList.as_view()),
+    path('lost/', LostCreateList.as_view()),
+    path('acquis/', AcquisCreateList.as_view()),
     path('<int:pk>/', PostDetail.as_view(), name='post-detail'),
 ]
