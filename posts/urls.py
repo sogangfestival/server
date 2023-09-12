@@ -9,5 +9,6 @@ from rest_framework.routers import DefaultRouter
 urlpatterns = [
     path('lost/', LostCreateList.as_view()),
     path('acquis/', AcquisCreateList.as_view()),
+    path('', LostCreateList.as_view()),
     path('<int:pk>/', PostDetail.as_view(), name='post-detail'),
 ]
