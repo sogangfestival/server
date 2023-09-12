@@ -47,8 +47,8 @@ class PostList(generics.ListCreateAPIView):
             # print(self.get_serializer(queryset, many=True).data)
             flag0_objects = queryset.filter(flag=False)
             flag1_objects = queryset.filter(flag=True)
-            flag0_objects = flag0_objects.order_by('created_at')
-            flag1_objects = flag1_objects.order_by('created_at')
+            flag0_objects = flag0_objects.order_by('-created_at')
+            flag1_objects = flag1_objects.order_by('-created_at')
 
 
 
