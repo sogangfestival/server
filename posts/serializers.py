@@ -21,16 +21,17 @@ class PostSerializer(serializers.ModelSerializer):
     def get_comment_count(self, obj):
         return obj.comment_post.count()
     
+    
     def get_created_at(self, obj):
-        now = datetime.now()
-        obj_created_at = datetime.combine(obj.created_at, datetime.min.time())
-
+        now = datetime.now(timezone.utc)
+        obj_created_at = obj.created_at.replace(tzinfo=timezone.utc)
         time_difference = now - obj_created_at
+
         days = time_difference.days
         seconds = time_difference.seconds
 
-        hours, remainder = divmod(seconds, 3600)
-        minutes, _ = divmod(remainder, 60)
+        hours = seconds // 3600
+        minutes = (seconds % 3600) // 60
 
         if days > 0:
             return f"{days} days {hours} hours {minutes} minutes ago"
@@ -40,6 +41,7 @@ class PostSerializer(serializers.ModelSerializer):
             return f"{minutes} minutes ago"
         else:
             return "Just now"
+
 
 class CommentSerializer(serializers.ModelSerializer):
     created_at = serializers.SerializerMethodField()
