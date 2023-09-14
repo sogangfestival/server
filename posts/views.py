@@ -1,3 +1,4 @@
+import json
 from rest_framework import generics
 from .models import *
 from .serializers import *
@@ -6,6 +7,10 @@ from rest_framework.response import Response
 from comments.models import Comment
 from rest_framework import status
 from rest_framework.pagination import PageNumberPagination
+from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
+from .forms import DocumentForm
 
 class Paginated(PageNumberPagination):
     page_size =4
@@ -56,6 +61,16 @@ class AcquisCreateList(generics.ListCreateAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
     pagination_class = Paginated
+    
+    def create(self, request, *args, **kwargs):
+        form = DocumentForm(request.POST, request.FILES)
+        if form.is_valid():
+            post = form.save(commit=False)
+            # 이 부분에서 form에서 추출한 파일들을 Post 모델의 필드에 대응되는 곳에 넣어줘야 합니다.
+            post.save()
+            return HttpResponse(json.dumps({"status": "Success"}))
+        else:
+            return HttpResponse(json.dumps({"status": "Failed"}))
 
     # filter 기능
     def list(self, request, *args, **kwargs):
@@ -110,3 +125,12 @@ class PostDetail(generics.RetrieveUpdateDestroyAPIView):
         return Response(data)
 
 
+@method_decorator(csrf_exempt, name="dispatch")
+def model_form_upload(request):
+    if request.method == "POST":
+        form = DocumentForm(request.POST,request.FILES)
+        if form.is_valid():
+            form.save()
+            return HttpResponse(json.dumps({"status": "Success"}))
+        else:
+            return HttpResponse(json.dumps({"status": "Failed"}))

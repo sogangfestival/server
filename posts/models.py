@@ -52,12 +52,12 @@ COLOR_CHOICES = (
 class Post(models.Model):
     title = models.CharField(max_length=255, unique=True)
     password = models.IntegerField(null = True)
-    image1 = models.ImageField(null=True, blank=True, upload_to ='img_files/')
-    image2 = models.ImageField(null=True, blank=True,upload_to ='img_files/')
-    image3 = models.ImageField(null=True, blank=True,upload_to ='img_files/')
-    image4 = models.ImageField(null=True, blank=True,upload_to ='img_files/')
-    image5 = models.ImageField(null=True, blank=True,upload_to ='img_files/')
-    created_at = models.DateField(auto_now_add=True)
+    image1 = models.FileField(null=True, blank=True, upload_to ='img_files/')
+    image2 = models.FileField(null=True, blank=True,upload_to ='img_files/')
+    image3 = models.FileField(null=True, blank=True,upload_to ='img_files/')
+    image4 = models.FileField(null=True, blank=True,upload_to ='img_files/')
+    image5 = models.FileField(null=True, blank=True,upload_to ='img_files/')
+    created_at = models.DateTimeField(auto_now_add=True)
     content = models.TextField()
 
     #True는 분실물, False는 습득물
@@ -70,3 +70,6 @@ class Post(models.Model):
     
     def __str__(self):
         return self.title
+
+
+    
