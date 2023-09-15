@@ -23,15 +23,13 @@ class PostSerializer(serializers.ModelSerializer):
     
     
     def get_created_at(self, obj):
-        now = datetime.now(timezone.utc)
-        obj_created_at = obj.created_at.replace(tzinfo=timezone.utc)
-        time_difference = now - obj_created_at
-
+        now = timezone.now()
+        time_difference = now - obj.created_at
         days = time_difference.days
         seconds = time_difference.seconds
 
-        hours = seconds // 3600
-        minutes = (seconds % 3600) // 60
+        hours, remainder = divmod(seconds, 3600)
+        minutes, _ = divmod(remainder, 60)
 
         if days > 0:
             return f"{days} days {hours} hours {minutes} minutes ago"
@@ -70,7 +68,7 @@ class CommentSerializer(serializers.ModelSerializer):
             return "Just now"
 
     def get_sub_comments(self, obj):
-        sub_comments = Comment.objects.filter(parent_comment=obj)
+        sub_comments = Comment.objects.filter(parent_comment=obj).order_by('-created_at')
         return CommentSerializer(sub_comments, many=True).data
 
 class PostDetailSerializer(serializers.ModelSerializer):
@@ -84,10 +82,8 @@ class PostDetailSerializer(serializers.ModelSerializer):
         model = Post
         fields = '__all__'
     def get_created_at(self, obj):
-        now = datetime.now()
-        obj_created_at = datetime.combine(obj.created_at, datetime.min.time())
-
-        time_difference = now - obj_created_at
+        now = timezone.now()
+        time_difference = now - obj.created_at
         days = time_difference.days
         seconds = time_difference.seconds
 
