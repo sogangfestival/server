@@ -46,6 +46,8 @@ class LostCreateList(generics.ListCreateAPIView):
                 print(keyword)
 
             queryset = queryset.filter(conditions)
+            queryset = queryset.order_by('-created_at')  # Add this line
+
         except Exception as e:
             return Response({'message': 'Filtering Error Occured, Sorry'}, status=status.HTTP_404_NOT_FOUND)
         
@@ -98,6 +100,8 @@ class AcquisCreateList(generics.ListCreateAPIView):
                 print(keyword)
 
             queryset = queryset.filter(conditions)
+            queryset = queryset.order_by('-created_at')  # Add this line
+
         except Exception as e:
             return Response({'message': 'Filtering Error Occured, Sorry'}, status=status.HTTP_404_NOT_FOUND)
         
@@ -107,6 +111,7 @@ class AcquisCreateList(generics.ListCreateAPIView):
             return self.get_paginated_response(serializer.data)
 
         serializer = PostSerializer(queryset, many=True)
+        
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
