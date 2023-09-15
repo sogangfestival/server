@@ -84,7 +84,7 @@ class AcquisCreateList(generics.ListCreateAPIView):
         queryset = self.get_queryset()
         queryset = queryset.filter(flag=False)
         try:
-            # Q 객체를 사용하여 모든 조건을 만족하는 포스트 필터링
+            # Q 객체를 사용하여 모든 조건을 만족하는 포스트 필터
             conditions = Q()
             
             for p in place:
