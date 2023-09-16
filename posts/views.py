@@ -16,11 +16,22 @@ class Paginated(PageNumberPagination):
     page_size =4
     page_size_query_param = 'page_size'
     max_page_size =4
+
 class LostCreateList(generics.ListCreateAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
     pagination_class = Paginated
     # filter 기능
+    def create(self, request, *args, **kwargs):
+        form = DocumentForm(request.POST, request.FILES)
+        if form.is_valid():
+            post = form.save(commit=False)
+            # 이 부분에서 form에서 추출한 파일들을 Post 모델의 필드에 대응되는 곳에 넣어줘야 합니다.
+            post.save()
+            return HttpResponse(json.dumps({"status": "Success"}))
+        else:
+            return HttpResponse(json.dumps({"status": "Failed"}))
+        
     def list(self, request, *args, **kwargs):
         place = request.query_params.getlist('place', [])
         color = request.query_params.getlist('color', [])
@@ -100,7 +111,8 @@ class AcquisCreateList(generics.ListCreateAPIView):
                 print(keyword)
 
             queryset = queryset.filter(conditions)
-            queryset = queryset.order_by('-created_at')  # Add this line
+            queryset = queryset.order_by('-created_at')
+            print(queryset)
 
         except Exception as e:
             return Response({'message': 'Filtering Error Occured, Sorry'}, status=status.HTTP_404_NOT_FOUND)

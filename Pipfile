@@ -17,6 +17,7 @@ sqlparse = "==0.4.4"
 typing-extensions = "==4.7.1"
 tzdata = "==2023.3"
 boto3 = "*"
+gunicorn = "*"
 
 [dev-packages]
 
