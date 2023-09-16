@@ -17,6 +17,7 @@ class Paginated(PageNumberPagination):
     page_size_query_param = 'page_size'
     max_page_size =4
 
+@method_decorator(csrf_exempt, name="dispatch")
 class LostCreateList(generics.ListCreateAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
@@ -24,8 +25,9 @@ class LostCreateList(generics.ListCreateAPIView):
     # filter 기능
     def create(self, request, *args, **kwargs):
         form = DocumentForm(request.POST, request.FILES)
+        print(form)
         if form.is_valid():
-            post = form.save(commit=False)
+            post = form.save()
             # 이 부분에서 form에서 추출한 파일들을 Post 모델의 필드에 대응되는 곳에 넣어줘야 합니다.
             post.save()
             return HttpResponse(json.dumps({"status": "Success"}))
@@ -69,7 +71,8 @@ class LostCreateList(generics.ListCreateAPIView):
 
         serializer = PostSerializer(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
-
+    
+@method_decorator(csrf_exempt, name="dispatch")
 class AcquisCreateList(generics.ListCreateAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
@@ -77,8 +80,9 @@ class AcquisCreateList(generics.ListCreateAPIView):
     
     def create(self, request, *args, **kwargs):
         form = DocumentForm(request.POST, request.FILES)
+        print(form)
         if form.is_valid():
-            post = form.save(commit=False)
+            post = form.save()
             # 이 부분에서 form에서 추출한 파일들을 Post 모델의 필드에 대응되는 곳에 넣어줘야 합니다.
             post.save()
             return HttpResponse(json.dumps({"status": "Success"}))
