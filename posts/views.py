@@ -25,7 +25,6 @@ class LostCreateList(generics.ListCreateAPIView):
     # filter 기능
     def create(self, request, *args, **kwargs):
         form = DocumentForm(request.POST, request.FILES)
-        print(form)
         if form.is_valid():
             post = form.save()
             # 이 부분에서 form에서 추출한 파일들을 Post 모델의 필드에 대응되는 곳에 넣어줘야 합니다.

@@ -64,9 +64,9 @@ class Post(models.Model):
     flag = models.BooleanField(default=True) 
 
     
-    place = MultiSelectField(max_length=100, choices=PLACES_CHOICES)
-    type = MultiSelectField(max_length=100, choices=TYPE_CHOICES)
-    color = MultiSelectField(max_length=100, choices=COLOR_CHOICES)
+    place = MultiSelectField(max_length=100, choices=PLACES_CHOICES, null=True)
+    type = MultiSelectField(max_length=100, choices=TYPE_CHOICES,null=True)
+    color = MultiSelectField(max_length=100, choices=COLOR_CHOICES,null=True)
     
     def __str__(self):
         return self.title
