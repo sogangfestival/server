@@ -72,6 +72,7 @@ CSRF_TRUSTED_ORIGINS = [
     "http://15.164.212.174",
     "https://www.sgucardinal.com",
     "https://api.sgfestival.store",
+    "http://localhost:45678",
 ]
 
 ROOT_URLCONF = 'config.urls'
