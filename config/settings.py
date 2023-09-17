@@ -62,7 +62,7 @@ MIDDLEWARE = [
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
-    "https://sgucardinal.com",
+    "https://www.sgucardinal.com",
     "https://api.sgfestival.store",
 ]
 
@@ -70,7 +70,7 @@ CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:8000",
     "http://15.164.212.174",
-    "https://sgucardinal.com",
+    "https://www.sgucardinal.com",
     "https://api.sgfestival.store",
 ]
 
