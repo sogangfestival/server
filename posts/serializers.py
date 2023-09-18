@@ -68,7 +68,7 @@ class CommentSerializer(serializers.ModelSerializer):
             return "Just now"
 
     def get_sub_comments(self, obj):
-        sub_comments = Comment.objects.filter(parent_comment=obj).order_by('-created_at')
+        sub_comments = Comment.objects.filter(parent_comment=obj)
         return CommentSerializer(sub_comments, many=True).data
 
 class PostDetailSerializer(serializers.ModelSerializer):
