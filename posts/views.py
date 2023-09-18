@@ -27,7 +27,6 @@ class LostCreateList(generics.ListCreateAPIView):
         form = DocumentForm(request.POST, request.FILES)
         if form.is_valid():
             post = form.save()
-            # 이 부분에서 form에서 추출한 파일들을 Post 모델의 필드에 대응되는 곳에 넣어줘야 합니다.
             post.save()
             return HttpResponse(json.dumps({"status": "Success"}))
         else:
@@ -58,7 +57,7 @@ class LostCreateList(generics.ListCreateAPIView):
                 print(keyword)
 
             queryset = queryset.filter(conditions)
-            queryset = queryset.order_by('-created_at')  # Add this line
+            queryset = queryset.order_by('-created_at')
 
         except Exception as e:
             return Response({'message': 'Filtering Error Occured, Sorry'}, status=status.HTTP_404_NOT_FOUND)
@@ -82,7 +81,6 @@ class AcquisCreateList(generics.ListCreateAPIView):
         print(form)
         if form.is_valid():
             post = form.save()
-            # 이 부분에서 form에서 추출한 파일들을 Post 모델의 필드에 대응되는 곳에 넣어줘야 합니다.
             post.save()
             return HttpResponse(json.dumps({"status": "Success"}))
         else:
@@ -138,7 +136,7 @@ class PostDetail(generics.RetrieveUpdateDestroyAPIView):
         post_id = kwargs["pk"]
         post_detail = Post.objects.get(id=post_id)
         # parent_comment가 null인 주요 댓글 조회
-        main_comments = Comment.objects.filter(post=post_detail, parent_comment=None).order_by('-created_at')
+        main_comments = Comment.objects.filter(post=post_detail, parent_comment=None)
         main_comments_data = CommentSerializer(main_comments, many=True).data
         data = self.get_serializer(post_detail).data
         data['comments'] = main_comments_data
